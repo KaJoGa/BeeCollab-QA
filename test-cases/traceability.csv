@@ -1,0 +1,23 @@
+spec_id,case_id,layer,automated,notes
+AUTH-01,TC-AUTH-001,L4,Y,PASS - User registration transitions cleanly to home dashboard with display name
+AUTH-02,TC-AUTH-002,L4,Y,PASS - Anonymous guest access issues JWT and lands on home dashboard
+AUTH-03,TC-AUTH-003,L4,Y,PASS - Invalid credentials login displays error toast and remains on /login
+AUTH-04,TC-AUTH-004,L1,Y,"FAIL (BUG-003) - Guest token calling GET /users/me returns 404 User Not Found"
+HOME-01,TC-HOME-001,L4,Y,PASS - Home dashboard renders navigation shell, online status chip, and action cards
+HOME-02,TC-HOME-002,L4,Y,PASS - User sign-out dialog prompts confirmation and clears JWT session
+MEET-01,TC-MEET-001,L4,Y,PASS - Host creates meeting via modal and connects to WebRTC call room
+MEET-02,TC-MEET-002,L4,Y,PASS - In-call microphone toggle and hand raise status update accurately
+MEET-03,TC-MEET-003,L4,Y,"FAIL (BUG-008) - Own chat messages displayed on left as external participant (R-24)"
+MEET-04,TC-MEET-004,L4,Y,PASS - Host creates agenda item and views item list in sidebar panel
+MEET-05,TC-MEET-005,L4,Y,PASS - Host creates interactive poll and launches poll card in sidebar
+MEET-06,TC-MEET-006,L4,Y,"FAIL (BUG-009) - Joining room using lowercase code hangs joining screen indefinitely (R-17)"
+MOB-01,TC-MOB-001,L4,Y,PASS - Responsive mobile layout adapts in 412x915 viewport with mobile header and inline controls
+API-IDOR-01,TC-SEC-001,L1,Y,"FAIL (BUG-001) - IDOR on /meetings/:id leaks private room code and metadata to any token (R-04)"
+API-CODE-01,TC-API-001,L1,Y,"FAIL (BUG-002) - Case-sensitive lookup on /meetings/code/:code returns 404 for lowercase (R-16)"
+API-FUZZ-01,TC-API-002,L1,Y,PASS - 10k title truncated gracefully; XSS rendered as literal string; SQLi blocked safely (403)
+API-BOUND-01,TC-API-003,L1,Y,PASS - Boundary validation correctly rejects invalid duration and maxParticipants limits
+WS-SEC-01,TC-WS-001,L3,Y,"FAIL (BUG-004) - WebSocket handshake accepts invalid JWT token and allows speaking spoofing (R-09)"
+WS-GUEST-01,TC-WS-002,L3,Y,"FAIL (BUG-006) - Guest poll voting throws unhandled Prisma foreign key exception P2003 (R-05)"
+WS-GUEST-02,TC-WS-003,L3,Y,"FAIL (BUG-005) - Host cannot kick, force-mute, or make co-host guest participants (R-06, R-07)"
+WS-RECON-03,TC-WS-004,L3,Y,"FAIL (BUG-007) - Brief 2.5s network disconnect by solo host permanently destroys meeting (R-21)"
+UI-AGENDA-03,TC-UI-001,L4,N,"FAIL (BUG-010) - Agenda Current Item progress bar is hard-coded at 45% (R-26)"
