@@ -21,7 +21,7 @@ This project strictly follows **black-box functional testing** against documente
 
 | Layer | Scope & Focus Area | Technology Stack | Status |
 |---|---|---|---|
-| **L1 REST API & Security** | DTO contract validation, IDOR unauthorized data leaks, JWT integrity (alg:none, tampered signatures), and boundary input fuzzing. | Node.js harness (`test/tools/`) | **26/26 PASS** |
+| **L1 REST API & Security** | DTO contract validation, IDOR unauthorized data leaks, JWT integrity (alg:none, tampered signatures), and boundary input fuzzing. | **Java 21 REST Assured** (`automation/`) & Node.js harness (`test/tools/`) | **13/13 PASS (Java) / 26/26 PASS** |
 | **L3 WebSocket Real-Time** | Socket.io `/meetings` handshake authentication, anonymous guest permissions, unhandled Prisma DB crashes, and host disconnect lifecycle. | Socket.io Client (`test/tools/`) | **8/8 PASS** |
 | **L4 Desktop UI Automation** | End-to-end user journeys: registration, anonymous guest access, WebRTC video meeting room creation, mic toggle, hand raise, live chat stream, agenda items, and voting polls. | **Java 21 LTS + Selenium 4 + Cucumber BDD 7 + JUnit 5** | **10/10 PASS** |
 | **L4 Mobile Web UI** | Responsive layout adaptation, touch-friendly in-call action controls, and mobile navigation drawer in **Pixel 7 (`412x915`)** viewport. | Selenium Chrome Mobile Emulation | **PASS** |
@@ -31,11 +31,12 @@ This project strictly follows **black-box functional testing** against documente
 
 ## 2. Automation Framework Highlights (`automation/`)
 
-The UI test suite in `automation/` was built to enterprise industry standards:
-1. **Strict Zero TypeScript for UI**: Implemented purely in **Java 21 LTS** with **Apache Maven**.
-2. **Strict Zero Fixed Sleep**: 100% synchronized via `WebDriverWait` and `ExpectedConditions` (no `Thread.sleep()`).
-3. **WebRTC Fake Media Simulation**: Configured with `--use-fake-device-for-media-stream` and `--use-fake-ui-for-media-stream` to run headless video call tests without physical webcam/microphone hardware.
-4. **Cloud Cold-Start Resilience**: Built-in automated warmup probe in `Hooks.java` that pings `GET /health` (`db === 'up'`) before opening the browser, eliminating flakiness from free-tier cloud sleep.
+The automation test suite in `automation/` was built to enterprise industry standards:
+1. **Full-Stack Java 21 Automation**: Implemented purely in **Java 21 LTS** with **Apache Maven**, covering both UI Automation (**Selenium 4 + Cucumber BDD**) and API Testing (**REST Assured 5.5**).
+2. **Deterministic Live Security Reproduction**: Java REST Assured tests (`ApiSecurityDefectTest.java`) programmatically reproduce and assert real security defects (**BUG-001 IDOR**, **BUG-002**, and **BUG-003**) live against backend endpoints.
+3. **Strict Zero Fixed Sleep**: 100% synchronized via `WebDriverWait` and `ExpectedConditions` (no `Thread.sleep()`).
+4. **WebRTC Fake Media Simulation**: Configured with `--use-fake-device-for-media-stream` and `--use-fake-ui-for-media-stream` to run headless video call tests without physical webcam/microphone hardware.
+5. **Cloud Cold-Start Resilience**: Built-in automated warmup probe in `Hooks.java` that pings `GET /health` (`db === 'up'`) before opening the browser, eliminating flakiness from free-tier cloud sleep.
 
 ---
 

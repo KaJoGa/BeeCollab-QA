@@ -34,6 +34,10 @@ public class Config {
         return get("base.url", "https://beecollab.vercel.app");
     }
 
+    public static String getApiUrl() {
+        return get("api.url", "https://beecollab-rwbj.onrender.com");
+    }
+
     public static boolean isHeadless() {
         return Boolean.parseBoolean(get("headless", "true"));
     }
