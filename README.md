@@ -1,6 +1,6 @@
 # BeeCollab — QA Engineering & Test Automation Portfolio
 
-An enterprise-grade, multi-layer Quality Assurance and Test Automation repository for **BeeCollab** — a real-time web video conferencing and collaboration platform.
+A comprehensive Quality Assurance and Test Automation portfolio project for **BeeCollab** — a real-time web video conferencing and collaboration platform.
 
 Tested directly against the **Live Production Deployment**:
 * Web Frontend: [https://beecollab.vercel.app](https://beecollab.vercel.app) (Next.js 16 + React 19 App Router)
@@ -14,8 +14,8 @@ This project strictly follows **black-box functional testing** against documente
 
 | Layer | Scope & Focus Area | Technology Stack | Status |
 |---|---|---|---|
-| **L1 REST API & Security** | DTO contract validation, IDOR unauthorized data leaks, JWT integrity (alg:none, tampered signatures), and boundary input fuzzing. | **Java 21 REST Assured** (`automation/`) & Node.js harness (`test/tools/`) | **13/13 PASS (Java) / 26/26 PASS** |
-| **L3 WebSocket Real-Time** | Socket.io `/meetings` handshake authentication, anonymous guest permissions, unhandled Prisma DB crashes, and host disconnect lifecycle. | Socket.io Client (`test/tools/`) | **8/8 PASS** |
+| **L1 REST API & Security** | DTO contract validation, IDOR unauthorized data leaks, JWT integrity (alg:none, tampered signatures), and boundary input fuzzing. | **Java 21 REST Assured** (`automation/`) | **13/13 PASS** |
+| **L3 WebSocket Real-Time** | Socket.io `/meetings` handshake authentication, anonymous guest permissions, real-time chat, and host disconnect teardown. | Socket.io Client (`test/tools/`) | **8/8 PASS** |
 | **L4 Desktop UI Automation** | End-to-end user journeys: registration, anonymous guest access, WebRTC video meeting room creation, mic toggle, hand raise, live chat stream, agenda items, and voting polls. | **Java 21 LTS + Selenium 4 + Cucumber BDD 7 + JUnit 5** | **10/10 PASS** |
 | **L4 Mobile Web UI** | Responsive layout adaptation, touch-friendly in-call action controls, and mobile navigation drawer in **Pixel 7 (`412x915`)** viewport. | Selenium Chrome Mobile Emulation | **PASS** |
 | **Exploratory Testing** | Session-Based Test Management (SBTM) investigating WebRTC media glitches, chat latency/jitter, host disconnect edge cases, and injection security. | 4 Structured Charters (`test-cases/exploratory/`) | **Completed** |
@@ -24,7 +24,7 @@ This project strictly follows **black-box functional testing** against documente
 
 ## 2. Automation Framework Highlights (`automation/`)
 
-The automation test suite in `automation/` was built to enterprise industry standards:
+The automation test suite in `automation/` was designed following structured QA engineering practices:
 1. **Full-Stack Java 21 Automation**: Implemented purely in **Java 21 LTS** with **Apache Maven**, covering both UI Automation (**Selenium 4 + Cucumber BDD**) and API Testing (**REST Assured 5.5**).
 2. **Deterministic Live Security Reproduction**: Java REST Assured tests (`ApiSecurityDefectTest.java`) programmatically reproduce and assert real security defects (**BUG-001 IDOR**, **BUG-002**, and **BUG-003**) live against backend endpoints.
 3. **Strict Zero Fixed Sleep**: 100% synchronized via `WebDriverWait` and `ExpectedConditions` (no `Thread.sleep()`).
@@ -69,18 +69,16 @@ mvn test -Dheadless=false
 ```
 *Reports generated at `automation/target/cucumber-reports/cucumber.html`.*
 
-### B. API & WebSocket Test Harnesses
+### B. Real-Time WebSocket Smoke Suite (Node.js)
 ```bash
 # Set live backend URL (PowerShell):
 $env:API_URL="https://beecollab-rwbj.onrender.com"
 
-# 1. Baseline Smoke Tests (88 checks):
-node test/tools/smoke-api.mjs
+# Run WebSocket Smoke Tests (8 checks):
 node test/tools/smoke-ws.mjs
 
-# 2. Security, IDOR & Database Defect Suites:
-node test/tools/test-api-security.mjs
-node test/tools/test-ws-bugs.mjs
+# Or run via npm from test/ directory:
+npm --prefix test run smoke
 ```
 
 ---

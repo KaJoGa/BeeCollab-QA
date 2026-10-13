@@ -1,7 +1,6 @@
 # ==============================================================================
-# GitHub Linguist Overrides
-# Exclude secondary test harness scripts from repository language statistics
-# Ensures GitHub highlights the primary Java 21 test automation framework (100% Java)
+# Git File Attributes & Line Endings
 # ==============================================================================
-test/tools/** linguist-detectable=false
-*.mjs linguist-detectable=false
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf

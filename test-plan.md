@@ -13,7 +13,7 @@
 
 1. Verify that **BeeCollab** behaves strictly as specified in `test/BeeCollab.md`, evaluated from the perspective of an end-user (black-box).
 2. Identify, isolate, and document defects with reproducible steps, environmental context, and clear severity ratings.
-3. Demonstrate structured, enterprise-grade Quality Assurance practices: test analysis & design, multi-layered execution (manual + automated), API contract validation, authorization testing, exploratory testing, performance baselines, and defect lifecycle tracking.
+3. Demonstrate structured, professional Quality Assurance practices: test analysis & design, multi-layered execution (manual + automated), API contract validation, authorization testing, exploratory testing, performance baselines, and defect lifecycle tracking.
 
 ## 2. Scope
 

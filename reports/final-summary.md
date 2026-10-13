@@ -5,7 +5,7 @@ A comprehensive, executive wrap-up of the complete Quality Assurance engineering
 ---
 
 ## 1. What Was Tested
-**BeeCollab** is an enterprise-grade real-time web video meeting and team collaboration platform.  
+**BeeCollab** is a real-time web video meeting and team collaboration platform.  
 - **Architecture**: Next.js 16 (React 19 App Router) frontend + NestJS 11 backend + Prisma 7 ORM + PostgreSQL (Neon cloud) + Socket.io gateway (`/meetings` namespace) + Full-Mesh WebRTC peer-to-peer audio/video streaming.  
 - **Target Environments**: Live Production (`https://beecollab.vercel.app` & `https://beecollab-rwbj.onrender.com`).  
 - **Scope Philosophy**: Strictly **black-box functional testing** against documented specifications. Zero modifications to application source code. All divergences and vulnerabilities were isolated, proven with raw network evidence, and triaged into official defect reports.
@@ -54,10 +54,10 @@ A comprehensive, executive wrap-up of the complete Quality Assurance engineering
 
 ## 5. Lessons Learned & Key Takeaways
 
-1. **Enterprise Multi-Layer Testing is Indispensable:** Testing REST endpoints alone would have missed the critical Prisma foreign key crash (`BUG-006`) and the instant meeting deletion bug (`BUG-007`), which only manifest during asynchronous WebSocket socket transitions.
+1. **Multi-Layer Testing is Indispensable:** Testing REST endpoints alone would have missed the critical Prisma foreign key crash (`BUG-006`) and the instant meeting deletion bug (`BUG-007`), which only manifest during asynchronous WebSocket socket transitions.
 2. **Cold-Start Resilience in Modern Cloud Environments:** Free-tier microservices (Render + Neon) go to sleep after 15 minutes of inactivity. Integrating an automated backend warmup probe in `Hooks.java` eliminated test flakiness and ensured robust execution across CI/CD pipelines.
 3. **Strict Zero Fixed Sleep Rule:** Banning `Thread.sleep()` in favor of Selenium's `WebDriverWait` with explicit `ExpectedConditions` kept test duration down to ~2 minutes while maintaining 100% deterministic reliability.
-4. **Adherence to Platform Boundaries:** Ensuring UI automation was executed strictly in **Java 21 + Maven** (matching job requirement guidelines) while maintaining clean Node scripts for raw WebSocket packets provided the optimal blend of performance, enterprise compliance, and maintainability.
+4. **Adherence to Platform Boundaries:** Ensuring UI automation was executed strictly in **Java 21 + Maven** (matching job requirement guidelines) while maintaining clean Node scripts for raw WebSocket packets provided the optimal blend of performance, architectural fidelity, and maintainability.
 
 ---
 
