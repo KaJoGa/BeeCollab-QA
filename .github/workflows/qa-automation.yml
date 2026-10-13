@@ -1,0 +1,76 @@
+name: QA Test Automation & Quality Gates
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch: # Allows manual one-click trigger from GitHub Actions UI
+  schedule:
+    # Scheduled nightly regression run at 02:00 UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  # Job 1: Primary Enterprise UI & REST API Suite (Java 21 + Selenium + Cucumber + REST Assured)
+  java-automation-suite:
+    name: Java 21 UI (BDD) & REST API Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21 LTS
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Verify Environment & Google Chrome
+        run: |
+          google-chrome --version
+          java -version
+          mvn -version
+
+      - name: Execute Full Automation Suite (REST Assured & Cucumber BDD)
+        working-directory: automation
+        run: mvn clean test
+
+      - name: Upload Cucumber & Surefire HTML Reports
+        uses: actions/upload-artifact@v4
+        if: always() # Upload reports even if assertions fail
+        with:
+          name: cucumber-and-surefire-reports
+          path: |
+            automation/target/cucumber-reports/
+            automation/target/surefire-reports/
+          retention-days: 14
+
+  # Job 2: Complementary WebSocket Real-Time & REST Smoke Suite (Node.js)
+  node-websocket-smoke:
+    name: Node.js WebSocket & REST Smoke Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: test/package-lock.json
+
+      - name: Install Dependencies
+        working-directory: test
+        run: npm install
+
+      - name: Execute WebSocket & API Smoke Checks
+        working-directory: test
+        env:
+          API_URL: https://beecollab-rwbj.onrender.com
+        run: npm run smoke
