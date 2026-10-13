@@ -3,6 +3,7 @@ package com.beecollab.qa.pages;
 import com.beecollab.qa.config.Config;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -41,6 +42,8 @@ public abstract class BasePage {
 
     protected void type(By locator, String text) {
         WebElement el = waitForVisibility(locator);
+        el.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        el.sendKeys(Keys.BACK_SPACE);
         el.clear();
         el.sendKeys(text);
     }

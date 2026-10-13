@@ -33,6 +33,8 @@ public class AuthSteps {
     public void userRegistersNewAccount(String name, String password) {
         String uniqueEmail = String.format("qa-%d-%d@qa.beecollab.test", System.currentTimeMillis(), (int)(Math.random() * 10000));
         loginPage.register(name, uniqueEmail, password);
+        homePage = new HomePage(getDriver());
+        homePage.waitForHomePage();
     }
 
     @When("the user enters email {string} and password {string}")
