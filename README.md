@@ -1,13 +1,5 @@
 # BeeCollab — QA Engineering & Test Automation Portfolio
 
-[![Java 21](https://img.shields.io/badge/Java-21%20LTS-orange.svg)](https://www.oracle.com/java/)
-[![Selenium 4](https://img.shields.io/badge/Selenium-4.28.1-green.svg)](https://www.selenium.dev/)
-[![Cucumber BDD](https://img.shields.io/badge/Cucumber-7.21.1-brightgreen.svg)](https://cucumber.io/)
-[![JUnit 5](https://img.shields.io/badge/JUnit-5.11.4-blue.svg)](https://junit.org/junit5/)
-[![Maven](https://img.shields.io/badge/Maven-3.9.x-red.svg)](https://maven.apache.org/)
-[![QA Automation CI](https://github.com/KaJoGa/BeeCollab-QA/actions/workflows/qa-automation.yml/badge.svg)](https://github.com/KaJoGa/BeeCollab-QA/actions/workflows/qa-automation.yml)
-[![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE)
-
 An enterprise-grade, multi-layer Quality Assurance and Test Automation repository for **BeeCollab** — a real-time web video conferencing and collaboration platform.
 
 Tested directly against the **Live Production Deployment**:
