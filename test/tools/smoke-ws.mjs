@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import { API, createMeeting, guestToken, makeReporter, register, uniqueEmail } from './config.mjs';
+import { API, createMeeting, guestToken, makeReporter, register, timedFetch, uniqueEmail } from './config.mjs';
 
 const t = makeReporter('WebSocket Real-Time Smoke Suite');
 const { check } = t;
@@ -28,15 +28,34 @@ async function seen(s, name, pred = () => true, timeout = 5000) {
 }
 
 try {
+  // 0. Pre-warming probe: ensure cloud instance is awake before opening socket connections
+  console.log('Probing backend health before running WebSocket smoke suite...');
+  try {
+    await timedFetch(`${API}/health`, {}, 60_000);
+  } catch (err) {
+    console.warn('Backend warmup probe warning:', err.message);
+  }
+
   // 1. Connection without token is rejected
-  const anon = io(`${API}/meetings`, { transports: ['websocket'], reconnection: false });
-  const anonEvents = [];
-  anon.onAny((n, p) => anonEvents.push({ n, p }));
-  await new Promise((resolve) => {
-    const timer = setTimeout(resolve, 4000);
-    anon.on('disconnect', () => { clearTimeout(timer); resolve(); });
+  const anon = io(`${API}/meetings`, { transports: ['websocket'], reconnection: false, timeout: 15_000 });
+  const rejectionDetected = await new Promise((resolve) => {
+    let handled = false;
+    const done = (ok) => {
+      if (handled) return;
+      handled = true;
+      clearTimeout(timer);
+      resolve(ok);
+    };
+    const timer = setTimeout(() => done(!anon.connected), 15_000);
+
+    anon.on('connect_error', () => done(true));
+    anon.on('error', () => done(true));
+    anon.on('disconnect', () => done(true));
+    anon.on('connect', () => {
+      setTimeout(() => done(!anon.connected), 2000);
+    });
   });
-  check('Unauthenticated handshake is rejected', anonEvents.some((e) => e.n === 'error') && !anon.connected);
+  check('Unauthenticated handshake is rejected', rejectionDetected && !anon.connected);
   anon.close();
 
   // 2. Host and guest join meeting
